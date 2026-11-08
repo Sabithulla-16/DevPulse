@@ -12,7 +12,7 @@ webview/tailwind.config.js
 webview/postcss.config.js
 tests/**
 docs/**
-DEVPULSE_*_REPORT.md
+DEVPULSE_*.md
 **/*.map
 **/*.tsbuildinfo
 *.log
