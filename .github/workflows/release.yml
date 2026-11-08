@@ -1,0 +1,71 @@
+name: Release DevPulse
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build, Verify & Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run TypeScript Typecheck
+        run: npm run typecheck
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run Automated Tests
+        run: npm test
+
+      - name: Build Webview & Extension
+        run: npm run build
+
+      - name: Package VSIX Extension
+        run: npx @vscode/vsce package --no-git-tag-version
+
+      - name: Generate Checksums
+        run: |
+          sha256sum devpulse-*.vsix > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            devpulse-*.vsix
+            SHA256SUMS.txt
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to VS Code Marketplace (Optional)
+        if: env.VSCE_PAT != ''
+        run: npx @vscode/vsce publish -p ${{ secrets.VSCE_PAT }} --packagePath devpulse-*.vsix
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+      - name: Publish to Open VSX (Optional)
+        if: env.OPEN_VSX_TOKEN != ''
+        run: npx ovsx publish devpulse-*.vsix -p ${{ secrets.OPEN_VSX_TOKEN }}
+        env:
+          OPEN_VSX_TOKEN: ${{ secrets.OPEN_VSX_TOKEN }}

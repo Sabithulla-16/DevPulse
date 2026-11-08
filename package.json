@@ -1,0 +1,509 @@
+{
+  "name": "devpulse",
+  "displayName": "DevPulse",
+  "description": "Unified local-first developer intelligence, AI token telemetry, Git observability, Coding Intelligence, API latency analytics, and hardware monitoring embedded in Visual Studio Code.",
+  "version": "1.0.0",
+  "publisher": "valtry-labs",
+  "icon": "resources/icons/devpulse.svg",
+  "license": "MIT",
+  "homepage": "https://github.com/Sabithulla-16/DevPulse#readme",
+  "bugs": {
+    "url": "https://github.com/Sabithulla-16/DevPulse/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sabithulla-16/DevPulse"
+  },
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "developer-tools",
+    "monitoring",
+    "analytics",
+    "workspace-scanner",
+    "telemetry",
+    "system-metrics",
+    "disk-storage",
+    "process-monitor"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:devpulse.explorer",
+    "onCommand:devpulse.openDashboard",
+    "onCommand:devpulse.openApiTestingStudio"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "devpulse",
+          "title": "DevPulse",
+          "icon": "resources/icons/devpulse.svg"
+        }
+      ]
+    },
+    "views": {
+      "devpulse": [
+        {
+          "id": "devpulse.explorer",
+          "name": "DevPulse Monitor",
+          "type": "tree"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "devpulse.openDashboard",
+        "title": "DevPulse: Open Dashboard",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "devpulse.openFileIntelligence",
+        "title": "DevPulse: View File Intelligence",
+        "icon": "$(folder-active)"
+      },
+      {
+        "command": "devpulse.openSystemIntelligence",
+        "title": "DevPulse: View System Intelligence",
+        "icon": "$(server-process)"
+      },
+      {
+        "command": "devpulse.openAiPlayground",
+        "title": "DevPulse: Open AI Playground",
+        "icon": "$(sparkle)"
+      },
+      {
+        "command": "devpulse.openAiIntelligence",
+        "title": "DevPulse: View AI Playground",
+        "icon": "$(sparkle)"
+      },
+      {
+        "command": "devpulse.openPulseInsights",
+        "title": "DevPulse: View Pulse Insights",
+        "icon": "$(compass)"
+      },
+      {
+        "command": "devpulse.openGitIntelligence",
+        "title": "DevPulse: View Git Intelligence",
+        "icon": "$(git-branch)"
+      },
+      {
+        "command": "devpulse.openCodingIntelligence",
+        "title": "DevPulse: View Coding Intelligence",
+        "icon": "$(history)"
+      },
+      {
+        "command": "devpulse.openApiIntelligence",
+        "title": "DevPulse: View API Intelligence",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "devpulse.openApiTestingStudio",
+        "title": "DevPulse: Open API Testing Studio",
+        "icon": "$(beaker)"
+      },
+      {
+        "command": "devpulse.openAlerts",
+        "title": "DevPulse: View Alerts",
+        "icon": "$(bell)"
+      },
+      {
+        "command": "devpulse.pauseCoding",
+        "title": "DevPulse: Pause Coding Tracking",
+        "icon": "$(debug-pause)"
+      },
+      {
+        "command": "devpulse.resumeCoding",
+        "title": "DevPulse: Resume Coding Tracking",
+        "icon": "$(debug-start)"
+      },
+      {
+        "command": "devpulse.refreshGit",
+        "title": "DevPulse: Refresh Git Metrics",
+        "icon": "$(git-commit)"
+      },
+      {
+        "command": "devpulse.scanWorkspace",
+        "title": "DevPulse: Scan Workspace",
+        "icon": "$(search)"
+      },
+      {
+        "command": "devpulse.cancelScan",
+        "title": "DevPulse: Cancel Workspace Scan",
+        "icon": "$(close)"
+      },
+      {
+        "command": "devpulse.openSettings",
+        "title": "DevPulse: Open Settings",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "devpulse.refreshMetrics",
+        "title": "DevPulse: Refresh Metrics",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "devpulse.refreshProcesses",
+        "title": "DevPulse: Refresh Process List",
+        "icon": "$(list-ordered)"
+      },
+      {
+        "command": "devpulse.refreshDisk",
+        "title": "DevPulse: Refresh Disk Metrics",
+        "icon": "$(database)"
+      },
+      {
+        "command": "devpulse.clearScanHistory",
+        "title": "DevPulse: Clear Scan History",
+        "icon": "$(history)"
+      },
+      {
+        "command": "devpulse.pauseMonitoring",
+        "title": "DevPulse: Pause Monitoring",
+        "icon": "$(debug-pause)"
+      },
+      {
+        "command": "devpulse.resumeMonitoring",
+        "title": "DevPulse: Resume Monitoring",
+        "icon": "$(pulse)"
+      },
+      {
+        "command": "devpulse.resetData",
+        "title": "DevPulse: Reset Local Data",
+        "icon": "$(trash)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "devpulse.openDashboard",
+          "when": "view == devpulse.explorer",
+          "group": "navigation@1"
+        },
+        {
+          "command": "devpulse.scanWorkspace",
+          "when": "view == devpulse.explorer",
+          "group": "navigation@2"
+        },
+        {
+          "command": "devpulse.refreshMetrics",
+          "when": "view == devpulse.explorer",
+          "group": "navigation@3"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "DevPulse",
+      "properties": {
+        "devpulse.monitoring.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable DevPulse background metric collection."
+        },
+        "devpulse.system.sampleIntervalSeconds": {
+          "type": "number",
+          "default": 5,
+          "minimum": 5,
+          "maximum": 300,
+          "description": "System metrics collection interval in seconds."
+        },
+        "devpulse.system.enableCpuMonitoring": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable CPU utilization collection."
+        },
+        "devpulse.system.enableMemoryMonitoring": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable RAM utilization collection."
+        },
+        "devpulse.system.enableDiskMonitoring": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable physical disk capacity and volume monitoring."
+        },
+        "devpulse.system.enableProcessMonitoring": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable active operating system process monitoring."
+        },
+        "devpulse.system.enablePortMonitoring": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable local development port listener checks."
+        },
+        "devpulse.system.processSampleIntervalSeconds": {
+          "type": "number",
+          "default": 15,
+          "minimum": 5,
+          "maximum": 300,
+          "description": "Process list refresh interval in seconds."
+        },
+        "devpulse.system.diskSampleIntervalSeconds": {
+          "type": "number",
+          "default": 30,
+          "minimum": 10,
+          "maximum": 600,
+          "description": "Disk capacity check interval in seconds."
+        },
+        "devpulse.filesystem.enableScanning": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable workspace filesystem storage and asset scanning."
+        },
+        "devpulse.filesystem.enableDuplicates": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable duplicate file detection via streaming content hashing."
+        },
+        "devpulse.filesystem.maxHashSizeMb": {
+          "type": "number",
+          "default": 50,
+          "minimum": 1,
+          "maximum": 500,
+          "description": "Maximum file size in MB considered for duplicate content hashing."
+        },
+        "devpulse.filesystem.scanConcurrency": {
+          "type": "number",
+          "default": 8,
+          "minimum": 1,
+          "maximum": 32,
+          "description": "Concurrency limit for asynchronous filesystem operations."
+        },
+        "devpulse.filesystem.excludedDirectories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "node_modules",
+            ".git",
+            ".vscode",
+            ".gemini",
+            ".agents",
+            "dist",
+            "build",
+            "out",
+            "coverage",
+            ".next",
+            ".nuxt",
+            ".turbo",
+            ".cache"
+          ],
+          "description": "Directory names excluded from workspace file scanning."
+        },
+        "devpulse.filesystem.excludedPatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "*.log",
+            "*.lock",
+            "package-lock.json",
+            "pnpm-lock.yaml",
+            "yarn.lock"
+          ],
+          "description": "Glob patterns excluded from workspace file scanning."
+        },
+        "devpulse.alerts.cpuThreshold": {
+          "type": "number",
+          "default": 90,
+          "minimum": 50,
+          "maximum": 99,
+          "description": "CPU utilization percentage that triggers a system alert."
+        },
+        "devpulse.alerts.memoryThreshold": {
+          "type": "number",
+          "default": 90,
+          "minimum": 50,
+          "maximum": 99,
+          "description": "RAM utilization percentage that triggers a system alert."
+        },
+        "devpulse.alerts.diskThreshold": {
+          "type": "number",
+          "default": 90,
+          "minimum": 50,
+          "maximum": 99,
+          "description": "Disk utilization percentage that triggers a storage alert."
+        },
+        "devpulse.alerts.cooldownSeconds": {
+          "type": "number",
+          "default": 60,
+          "minimum": 10,
+          "maximum": 600,
+          "description": "Cooldown period between alerts of the same type."
+        },
+        "devpulse.dashboard.theme": {
+          "type": "string",
+          "enum": [
+            "dark",
+            "light"
+          ],
+          "default": "dark",
+          "description": "DevPulse dashboard theme."
+        },
+        "devpulse.statusbar.showCpu": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show CPU utilization in the status bar."
+        },
+        "devpulse.statusbar.showMemory": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show memory usage in the status bar."
+        },
+        "devpulse.statusbar.showState": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show DevPulse status icon in the status bar."
+        },
+        "devpulse.modules.ai.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable AI token and model usage monitoring."
+        },
+        "devpulse.modules.git.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Git repository and commit monitoring."
+        },
+        "devpulse.ai.ollamaHost": {
+          "type": "string",
+          "default": "http://localhost:11434",
+          "description": "Host URL for local Ollama instance."
+        },
+        "devpulse.ai.dailyBudgetLimit": {
+          "type": "number",
+          "default": 10,
+          "description": "Daily AI spending budget limit in USD."
+        },
+        "devpulse.ai.monthlyBudgetLimit": {
+          "type": "number",
+          "default": 100,
+          "description": "Monthly AI spending budget limit in USD."
+        },
+        "devpulse.ai.syncIntervalSeconds": {
+          "type": "number",
+          "default": 60,
+          "description": "AI provider sync interval in seconds."
+        },
+        "devpulse.ai.enableLocalAgentDetection": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically detect local AI CLI agent token usage (Claude Code, etc.)."
+        },
+        "devpulse.git.pollIntervalSeconds": {
+          "type": "number",
+          "default": 30,
+          "description": "Git repository polling interval in seconds."
+        },
+        "devpulse.git.maxCommits": {
+          "type": "number",
+          "default": 100,
+          "description": "Maximum number of recent commits to index per repository."
+        },
+        "devpulse.git.trackRemoteBranches": {
+          "type": "boolean",
+          "default": true,
+          "description": "Track remote branches and sync status in Git Intelligence."
+        },
+        "devpulse.modules.coding.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable Coding session monitoring."
+        },
+        "devpulse.modules.api.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable API request telemetry."
+        },
+        "devpulse.apiTesting.logToApiIntelligence": {
+          "type": "boolean",
+          "default": false,
+          "description": "Log API Testing Studio requests to API Intelligence telemetry (source=api_testing_studio)."
+        },
+        "devpulse.apiTesting.maxResponseBodySizeMb": {
+          "type": "number",
+          "default": 20,
+          "minimum": 1,
+          "maximum": 100,
+          "description": "Maximum response payload size in MB buffered for inspection in API Testing Studio."
+        },
+        "devpulse.apiTesting.followRedirectsLimit": {
+          "type": "number",
+          "default": 10,
+          "minimum": 0,
+          "maximum": 20,
+          "description": "Maximum number of redirects to follow during request execution."
+        },
+        "devpulse.apiTesting.scriptTimeoutMs": {
+          "type": "number",
+          "default": 1500,
+          "minimum": 500,
+          "maximum": 10000,
+          "description": "Timeout in milliseconds for pre-request and test assertion scripts."
+        },
+        "devpulse.apiTesting.defaultTimeoutMs": {
+          "type": "number",
+          "default": 30000,
+          "minimum": 1000,
+          "maximum": 300000,
+          "description": "Default request timeout in milliseconds in API Testing Studio."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "npm run build:webview && npm run build:extension",
+    "build:extension": "node esbuild.js",
+    "build:webview": "vite build --config webview/vite.config.ts",
+    "watch": "concurrently -k \"npm:watch:extension\" \"npm:watch:webview\"",
+    "watch:extension": "node esbuild.js --watch",
+    "watch:webview": "vite build --watch --config webview/vite.config.ts",
+    "typecheck": "tsc --noEmit && tsc -p webview/tsconfig.json --noEmit",
+    "test": "vitest run",
+    "lint": "eslint src webview/src",
+    "package": "npm run build && vsce package"
+  },
+  "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "@types/prismjs": "^1.26.6",
+    "ignore": "^7.0.14",
+    "marked": "^18.1.3",
+    "monaco-editor": "^0.57.0",
+    "prismjs": "^1.30.0",
+    "sql.js": "^1.13.0",
+    "systeminformation": "^5.33.19"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/sql.js": "^1.4.9",
+    "@types/vscode": "^1.95.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "@vscode/vsce": "^3.2.1",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.0",
+    "esbuild": "^0.24.2",
+    "eslint": "^9.17.0",
+    "lucide-react": "^0.468.0",
+    "postcss": "^8.4.49",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "recharts": "^2.15.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5",
+    "vitest": "^2.1.8"
+  }
+}

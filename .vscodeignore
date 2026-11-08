@@ -1,0 +1,16 @@
+.vscode/**
+src/**
+webview/src/**
+webview/index.html
+webview/vite.config.ts
+webview/tsconfig.json
+webview/tailwind.config.js
+webview/postcss.config.js
+tests/**
+design-system/**
+.agents/**
+**/*.map
+**/*.tsbuildinfo
+esbuild.js
+vitest.config.ts
+eslint.config.js
