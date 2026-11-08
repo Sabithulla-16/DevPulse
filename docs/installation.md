@@ -19,18 +19,18 @@ DevPulse can be installed directly from the Visual Studio Code Marketplace or ma
 If you are developing offline or testing a specific release, you can install the official packaged VSIX directly.
 
 ### Via Command Line
-Download `devpulse-ai-1.0.0.vsix` from [GitHub Releases](https://github.com/Sabithulla-16/DevPulse/releases) and run:
+Download `valtry-devpulse-1.0.0.vsix` from [GitHub Releases](https://github.com/Sabithulla-16/DevPulse/releases) and run:
 
 ```bash
-code --install-extension devpulse-ai-1.0.0.vsix
+code --install-extension valtry-devpulse-1.0.0.vsix
 ```
 
 ### Via VS Code UI
-1. Download `devpulse-ai-1.0.0.vsix` from the [Releases page](https://github.com/Sabithulla-16/DevPulse/releases).
+1. Download `valtry-devpulse-1.0.0.vsix` from the [Releases page](https://github.com/Sabithulla-16/DevPulse/releases).
 2. In VS Code, navigate to the Extensions view (`Ctrl+Shift+X`).
 3. Click the `...` (More Actions) menu in the top right of the Extensions panel.
 4. Select **Install from VSIX...**.
-5. Choose the downloaded `devpulse-ai-1.0.0.vsix` file.
+5. Choose the downloaded `valtry-devpulse-1.0.0.vsix` file.
 
 ---
 
@@ -40,12 +40,12 @@ Every official release includes a `SHA256SUMS.txt` cryptographic checksum file. 
 
 ### Windows (PowerShell)
 ```powershell
-Get-FileHash .\devpulse-ai-1.0.0.vsix -Algorithm SHA256
+Get-FileHash .\valtry-devpulse-1.0.0.vsix -Algorithm SHA256
 ```
 
 ### macOS / Linux
 ```bash
-sha256sum devpulse-ai-1.0.0.vsix
+sha256sum valtry-devpulse-1.0.0.vsix
 ```
 
 Compare the computed hash with the release checksum:
