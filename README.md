@@ -178,7 +178,7 @@ Alternatively, in VS Code, open the Extensions view, click the `...` (Views and 
 ## Commands Palette Integration
 
 - `DevPulse: Open Dashboard` (`devpulse.openDashboard`)
-- `DevPulse: View AI Intelligence` (`devpulse.openAiIntelligence`)
+- `DevPulse: Open AI Playground` (`devpulse.openAiPlayground`)
 - `DevPulse: View Git Intelligence` (`devpulse.openGitIntelligence`)
 - `DevPulse: View File Intelligence` (`devpulse.openFileIntelligence`)
 - `DevPulse: View System Intelligence` (`devpulse.openSystemIntelligence`)

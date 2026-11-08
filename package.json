@@ -4,7 +4,7 @@
   "description": "Unified local-first developer intelligence, AI token telemetry, Git observability, Coding Intelligence, API latency analytics, and hardware monitoring embedded in Visual Studio Code.",
   "version": "1.0.0",
   "publisher": "valtry-labs",
-  "icon": "resources/icons/devpulse.svg",
+  "icon": "resources/icons/devpulse.png",
   "license": "MIT",
   "homepage": "https://github.com/Sabithulla-16/DevPulse#readme",
   "bugs": {
@@ -76,11 +76,6 @@
       {
         "command": "devpulse.openAiPlayground",
         "title": "DevPulse: Open AI Playground",
-        "icon": "$(sparkle)"
-      },
-      {
-        "command": "devpulse.openAiIntelligence",
-        "title": "DevPulse: View AI Playground",
         "icon": "$(sparkle)"
       },
       {
