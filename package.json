@@ -1,5 +1,5 @@
 {
-  "name": "devpulse",
+  "name": "devpulse-ai",
   "displayName": "DevPulse",
   "description": "A local-first developer intelligence platform for Visual Studio Code. Monitor system resources, analyze Git activity, track coding sessions, explore AI usage, inspect API performance, and gain actionable developer insights — all in one unified workspace.",
   "version": "1.0.0",

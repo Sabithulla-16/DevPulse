@@ -128,10 +128,10 @@ DevPulse is built using modern VS Code Extension Architecture:
 3. Click **Install**.
 
 ### Method 2: Manual VSIX Package
-Download the latest `devpulse-1.0.0.vsix` from [GitHub Releases](https://github.com/Sabithulla-16/DevPulse/releases) and install via CLI:
+Download the latest `devpulse-ai-1.0.0.vsix` from [GitHub Releases](https://github.com/Sabithulla-16/DevPulse/releases) and install via CLI:
 
 ```bash
-code --install-extension devpulse-1.0.0.vsix
+code --install-extension devpulse-ai-1.0.0.vsix
 ```
 
 Alternatively, open the Extensions view in VS Code, click `...` → **Install from VSIX...**, and choose the `.vsix` file.
