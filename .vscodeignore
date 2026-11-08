@@ -1,4 +1,8 @@
 .vscode/**
+.github/**
+.internal/**
+.agents/**
+design-system/**
 src/**
 webview/src/**
 webview/index.html
@@ -7,10 +11,11 @@ webview/tsconfig.json
 webview/tailwind.config.js
 webview/postcss.config.js
 tests/**
-design-system/**
-.agents/**
+docs/**
+DEVPULSE_*_REPORT.md
 **/*.map
 **/*.tsbuildinfo
+*.log
 esbuild.js
 vitest.config.ts
 eslint.config.js

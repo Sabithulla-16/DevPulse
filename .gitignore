@@ -1,7 +1,26 @@
+# Dependencies and Builds
 node_modules/
 out/
 webview/dist/
 .vscode-test/
 *.vsix
 coverage/
+*.tsbuildinfo
+*.log
+
+# Operating System & Editor
 .DS_Store
+Thumbs.db
+.vscode/
+
+# Local SQLite databases and backups
+*.sqlite
+*.sqlite-journal
+*.db
+*.bak*
+
+# Local Internal Engineering Documentation & Agent Skills
+.internal/
+.agents/
+design-system/
+DEVPULSE_*_REPORT.md

@@ -1,216 +1,275 @@
+<div align="center">
+
 # DevPulse
 
-A professional, local-first Developer Intelligence and Monitoring Platform embedded inside Visual Studio Code.
+**A local-first developer intelligence and observability platform for Visual Studio Code.**
 
-DevPulse provides a unified observability center for your local development environment—tracking system hardware resources, workspace files, local AI token telemetry, and Git repository activity with 100% on-device privacy.
+[![Release](https://img.shields.io/badge/Release-v1.0.0-0284c7?style=flat-square)](https://github.com/Sabithulla-16/DevPulse/releases/tag/v1.0.0)
+[![VS Code](https://img.shields.io/badge/VS%20Code-%5E1.95.0-007acc?style=flat-square&logo=visualstudiocode)](https://code.visualstudio.com/)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
+[![Local First](https://img.shields.io/badge/Architecture-Local--First-10b981?style=flat-square)](#privacy--data-sovereignty)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react)](https://react.dev/)
+
+<p align="center">
+  <a href="#introduction">Introduction</a> •
+  <a href="#core-features">Features</a> •
+  <a href="#architecture">Architecture</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#getting-started">Getting Started</a> •
+  <a href="#ai-providers">AI Providers</a> •
+  <a href="#api-intelligence">API Intelligence</a> •
+  <a href="#privacy--data-sovereignty">Privacy</a> •
+  <a href="#docs">Documentation</a>
+</p>
+
+</div>
 
 ---
 
-## Architecture Overview
+## Introduction
 
-DevPulse is built with an asynchronous, collector-based architecture:
+Modern software development requires balancing local machine resources, Git workflows, coding sessions, cloud AI expenditures, and microservice APIs. Developers typically juggle separate terminal windows, activity monitors, Git GUIs, API clients, and browser dashboards just to understand the state of their development environment.
+
+**DevPulse** consolidates this fragmented tooling into a single, cohesive observability center embedded directly within Visual Studio Code. Operating with a strict **local-first** philosophy, DevPulse captures real-time hardware telemetry, analyzes Git commit velocity, tracks active coding focus, logs API response latency, and monitors on-device/cloud AI tokens — **storing 100% of data locally on your device with zero telemetry tracking**.
+
+---
+
+## Core Features
+
+### 1. Overview Dashboard
+- **Unified Health Snapshot**: Real-time KPI summary across system CPU, RAM, storage, active coding session, Git status, API requests, and AI tokens.
+- **Deep-Link Navigation**: Click any KPI card to transition directly into the corresponding detailed intelligence module.
+- **Authentic Telemetry**: Zero synthetic or mock metrics. Intuitive empty states guide service setup when integrations are inactive.
+
+### 2. Pulse Insights
+- **Cross-Module Correlation Engine**: Synthesizes telemetry across System, Files, Git, Coding, API, and AI modules to identify meaningful development trends.
+- **Deterministic Rule Triggers**: Evaluates mathematical anomalies (e.g., elevated API error rates coinciding with high CPU utilization or heavy Git commit cycles).
+- **Explainable Evidence Drawer**: Inspect the underlying evidence, sample values, confidence scores, and time-window bounds for every generated insight.
+- **Explain with AI**: Generate deep-dive diagnostic contextual explanations on detected patterns using your configured LLM provider.
+
+### 3. System Intelligence & Monitoring
+- **Hardware Telemetry**: Delta-calculated CPU utilization, RAM usage, and mounted storage capacity.
+- **Active Process Monitor**: Real-time list of top resource-consuming processes with safe termination capabilities for runaway development servers.
+- **Dynamic Port Probing**: Automatically detects active localhost development ports (`3000`, `5173`, `8080`, `11434`, etc.) and provides a 1-click **Free Port** action to release occupied sockets.
+
+### 4. Workspace & File Intelligence
+- **Asynchronous Filesystem Scanner**: Recursively scans workspace folders without blocking the VS Code UI thread.
+- **File Distribution & Extension Breakdown**: Size distribution charts and file-type categorizations.
+- **Duplicate File Detection**: Identifies redundant duplicate files using fast hash comparisons.
+- **Largest Files Audit**: Quickly find oversized assets or unignored build directories consuming workspace storage.
+
+### 5. Git Intelligence
+- **Repository Observability**: Multi-root workspace discovery, branch tracking, and uncommitted diff counts.
+- **Commit History & Author Analytics**: Commit frequency charts, commit velocity, and author contribution rankings.
+- **Credential Masking**: Automatically sanitizes sensitive basic auth credentials or tokens in Git remote URLs before display.
+
+### 6. Coding Intelligence
+- **Focus & Session Tracking**: Tracks active keyboard/editor engagement versus idle time without ever logging raw code or keystrokes.
+- **Language Distribution**: Breaks down time spent across languages (TypeScript, Python, Rust, Go, CSS, etc.).
+- **Multi-Workspace Isolation**: Keeps telemetry strictly isolated per project root to prevent client data leakage.
+
+### 7. AI Playground & Usage Analytics
+- **Unified AI Workspace**: Single-model streaming chat (SSE/NDJSON) supporting local Ollama (`$0.00` spend), OpenAI, Anthropic, Google Gemini, Groq, and custom OpenAI-compatible endpoints.
+- **Prompt Studio**: Built-in template manager with `{{variable}}` substitution and snapshot versioning.
+- **Context Attachments**: Securely attach up to 5 workspace files (256 KB limit per file) with live input token calculation.
+- **Token Telemetry**: In-depth prompt and completion token accounting with estimated cloud cost tracking and budget caps.
+
+### 8. API Intelligence & Testing Studio
+- **Inbound Server Telemetry**: Embedded local ingestion server (`http://127.0.0.1:4318`) with Express middleware integration, tracking HTTP request counts, status codes, and exact P95/P99 latency percentiles.
+- **API Testing Studio**: Embedded HTTP client with collection management, environment variables, secret variable offloading into VS Code `SecretStorage`, and assertion scripts.
+- **Cross-Origin Security**: Strips sensitive `Authorization` and `Cookie` headers upon cross-domain redirects.
+
+### 9. Alerts & Notification Center
+- **Configurable Thresholds**: Set custom warning triggers for CPU load, RAM usage, and disk capacity.
+- **Cooldown Safeguards**: Configurable cooldown intervals prevent alert storms during heavy compilation bursts.
+
+---
+
+## Architecture
+
+DevPulse is built using modern VS Code Extension Architecture:
 
 ```
-PulseEngine
-  |-- CollectorRegistry  (Error-isolated collector manager)
-  |-- EventBus           (Type-safe pub/sub event bus)
-  |-- Scheduler          (Asynchronous tick & interval coordinator)
-  |-- EventNormalizer    (Event schema validation & timestamping)
-  |-- MetricsProcessor   (Repository routing & statistical rollups)
-  |-- Database           (SQLite engine via SQL.js WebAssembly)
-  |-- AlertEngine        (Autonomous threshold & anomaly detector with cooldowns)
+┌─────────────────────────────────────────────────────────────┐
+│                    VS Code Extension Host                   │
+│                                                             │
+│  PulseEngine ──┬── CollectorRegistry (System, Git, Coding)  │
+│                ├── EventBus & Normalizer                     │
+│                ├── SQLite Database (SQL.js WebAssembly)     │
+│                ├── AI Provider Registry & Adapters          │
+│                ├── API Ingestion Server (Express/HTTP)      │
+│                └── AlertEngine                              │
+└──────────────────────────────┬──────────────────────────────┘
+                               │ IPC (JSON RPC Messages)
+┌──────────────────────────────▼──────────────────────────────┐
+│                  VS Code Webview Panel                      │
+│                                                             │
+│  React 19 Dashboard ──┬── Overview & Health Scorecards      │
+│                       ├── Pulse Insights & Evidence Drawer  │
+│                       ├── AI Playground & Prompt Studio     │
+│                       ├── API Testing Studio & Collections  │
+│                       └── System & Git Visualizations       │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### Collector Ecosystem
-
-| Collector | Category | Status | Telemetry Captured |
-|---|---|---|---|
-| **System** | `system` | **Active** | Host CPU % (delta tick calculation), RAM (total, used, free), Uptime |
-| **Disk** | `system` | **Active** | Mounted disk storage (total, used, free, utilization %) |
-| **Process** | `system` | **Active** | Top active processes (PID, name, CPU %, memory bytes, memory %, safe termination) |
-| **Port** | `system` | **Active** | Dynamic dev ports (3000, 5173, 8080, 11434, etc.), listening state, PID, Free Port |
-| **Filesystem** | `filesystem` | **Active** | Workspace size, recursive folders, largest files, extension drill-down, duplicate detection |
-| **AI Playground** | `ai` | **Active** | Local Ollama & cloud model chat, streaming responses, context selection, Prompt Studio, token telemetry |
-| **Pulse Insights** | `insights` | **Active** | Cross-module correlation engine, 6-module environment health overview, explainable evidence |
-| **Git Intelligence** | `git` | **Active** | Branch topology, uncommitted diffs, commit velocity, author contributions, repo health |
-| **Coding Intelligence**| `coding` | **Active** | Active session intervals, keystroke/file edit tracking, language distribution |
-| **API Intelligence** | `api` | **Active** | Outbound/inbound dev HTTP requests, latency, errors, endpoint observability |
-| **API Testing Studio** | `api_test` | **Active** | Interactive request runner, collections, environments, assertion scripts |
-
----
-
-## Phase 3 Modules: AI & Git Intelligence
-
-### 1. AI Intelligence (`ai`)
-
-- **Flagship Local Ollama Integration**:
-  - Connects to local Ollama instance (`http://localhost:11434`) without requiring external API keys.
-  - Automatically queries `/api/tags` and `/api/version` to discover installed models (`llama3`, `mistral`, `deepseek-r1`, `phi`, `qwen`, etc.).
-  - Accurately tracks local inference at **$0.00 spend**.
-- **Multi-Provider Cloud Connectors**:
-  - Out-of-the-box adapters for **OpenAI**, **Anthropic**, **Google Gemini**, and **Groq**.
-  - Secure credential storage using VS Code `SecretStorage` (`context.secrets`)—API keys are never stored in plain text or written to SQLite.
-  - One-click "Test Connection" with latency calculation and error sanitization (masks credentials).
-- **Local Agent Telemetry**:
-  - Safe discovery of local CLI coding agent sessions (e.g. Claude Code metadata in `~/.claude/`).
-  - Strictly reads numeric token counts and timestamps. **Never reads or stores prompts, code, or outputs**.
-- **Comprehensive Cost Calculator & Pricing Catalog**:
-  - Built-in pricing catalog covering major models (GPT-4o, GPT-4o-mini, Claude 3.5 Sonnet, Claude 3.5 Haiku, Gemini 1.5 Pro/Flash, Groq Llama 3.3).
-  - Ability to customize input and output pricing rules per 1M tokens.
-- **Budget Tracking & Safeguards**:
-  - Real-time daily spending tracker with configurable limits (e.g. $10.00/day).
-  - Progress bar with 85% threshold warning alerts.
-
-### 2. Git Intelligence (`git`)
-
-- **Multi-Root & Sub-Repository Discovery**:
-  - Detects active workspace git repositories, including monorepos and nested project folders.
-- **Safe CLI Command Execution**:
-  - Uses `child_process.execFile` with argument arrays to prevent shell command injection.
-  - Regex stripping of sensitive authentication credentials from remote URLs (`https://user:token@github.com/...` -> `https://github.com/...`).
-- **Working Tree Observability**:
-  - Real-time inspection of uncommitted files via `git status --porcelain=v1 -uall`.
-  - Classifies status: Modified (`M`), Added/Untracked (`A` / `?`), Deleted (`D`), Renamed (`R`), Conflicted (`U`).
-  - Staged vs. Unstaged indicators.
-  - **Click to Open**: Clicking any uncommitted file immediately opens it in the active VS Code editor.
-- **Commit History & Search**:
-  - Full commit history with short hash, message, author, timestamp, insertions, and deletions.
-  - Instant live filtering by commit message, hash, or author name.
-- **Branch Topology & Tracking**:
-  - Full local and remote branch listing (`git branch -a -vv`).
-  - Current active branch indicator.
-  - Upstream tracking status with ahead / behind commit counters (`↑ ahead`, `↓ behind`).
-- **Contributor Analytics**:
-  - Author contribution rankings by commit count, lines inserted, lines deleted, and last active date.
-- **Repository Health Insights**:
-  - Automatic detection of large working tree backlogs (> 30 files).
-  - High churn refactoring alerts (> 2,000 line changes).
-  - Branch out-of-sync warnings.
-
----
-
-## Phase 2 Modules (Preserved & Enhanced)
-
-### File Intelligence
-- Full workspace scanning with `.gitignore` integration and symlink cycle safety.
-- **Extension Analytics with Click-to-View Drilldown**: Clicking any file format (`.ts`, `.json`, `.png`, etc.) lists all matching files with pagination, sorting, search, and click-to-open.
-- Recursive directory hierarchy and folder weight analytics.
-- Top largest asset detection.
-- Streaming SHA-256 duplicate content detection.
-- Historical workspace growth comparison.
-
-### Advanced System Intelligence
-- Real-time CPU load (average, peak, time-series history).
-- System RAM utilization.
-- Mounted filesystem storage capacity.
-- **Process Monitoring with Safe Termination**: View active processes and stop runaway dev tasks.
-- **Dynamic Port Discovery & Free Port**: Detect listening dev ports (`3000`, `5173`, `8080`, `11434`, etc.) and release occupied ports with 1-click confirmation and automatic notification dismissals.
-
----
-
-## Local Database Foundation (SQLite)
-
-All metrics are stored locally in an on-device SQLite database via **SQL.js** (WebAssembly) in `globalStorageUri`.
-
-### Complete 27-Table Relational Schema Across 3 Migrations
-
-- **Migration 1 (Phase 1 Foundation)**: `schema_migrations`, `metric_events`, `system_metrics`, `ai_usage`, `workspace_snapshots`, `git_activity`, `coding_sessions`, `api_requests`, `alerts`, `budgets`, `settings`.
-- **Migration 2 (Phase 2 Workspace & System)**: `file_scans`, `file_entries`, `folder_stats`, `duplicate_groups`, `disk_metrics`, `process_metrics`, `port_metrics`.
-- **Migration 3 (Phase 3 AI & Git Intelligence)**:
-  - `ai_providers`: Discovered AI engines, connectivity status, endpoints, local/cloud classification.
-  - `ai_models`: Model registry, parameter size, context windows, discovery timestamps.
-  - `ai_usage_records`: High-fidelity prompt/completion token consumption, duration, estimated cost, source agent.
-  - `ai_pricing`: Custom and catalog pricing rates per 1M tokens.
-  - `ai_budgets`: Spending limits and threshold triggers.
-  - `git_repositories`: Tracked local repositories, root paths, current branch, clean status.
-  - `git_commits`: Commit hash, short hash, author, message, timestamp, file diffs, lines changed.
-  - `git_branches`: Local/remote branch list, upstream tracking, ahead/behind counts.
-  - `git_working_tree`: Current uncommitted files, staged status, modification states.
+- **Extension Host**: Pure TypeScript running on Node.js inside the VS Code Extension Runtime.
+- **Webview UI**: Built with React 19, Tailwind CSS, Monaco Editor, Lucide Icons, and bundled via Vite.
+- **Local Persistence**: Embedded SQLite WebAssembly runtime (`sql-wasm.wasm`) executing 8 transactional migrations with automatic circular ring buffer triggers.
+- **Secret Storage**: Provider API keys and environment secrets reside in VS Code `SecretStorage` (`context.secrets`).
 
 ---
 
 ## Installation
 
 ### Method 1: Visual Studio Code Marketplace
-1. Open Visual Studio Code.
-2. Open the Extensions view (`Ctrl+Shift+X` on Windows/Linux, `Cmd+Shift+X` on macOS).
-3. Search for **DevPulse**.
-4. Click **Install**.
+1. Open VS Code and press `Ctrl+Shift+X` (or `Cmd+Shift+X` on macOS).
+2. Search for **DevPulse**.
+3. Click **Install**.
 
-### Method 2: Manual VSIX Installation
-Download the `devpulse-1.0.0.vsix` package from [GitHub Releases](https://github.com/Sabithulla-16/DevPulse/releases) and run:
-```powershell
+### Method 2: Manual VSIX Package
+Download the latest `devpulse-1.0.0.vsix` from [GitHub Releases](https://github.com/Sabithulla-16/DevPulse/releases) and install via CLI:
+
+```bash
 code --install-extension devpulse-1.0.0.vsix
 ```
-Alternatively, in VS Code, open the Extensions view, click the `...` (Views and More Actions) menu at the top, select **Install from VSIX...**, and choose `devpulse-1.0.0.vsix`.
+
+Alternatively, open the Extensions view in VS Code, click `...` → **Install from VSIX...**, and choose the `.vsix` file.
 
 ---
 
 ## Getting Started
 
-1. **Open the Dashboard**: Click the DevPulse icon in the VS Code Activity Bar or run `DevPulse: Open Dashboard` from the Command Palette (`Ctrl+Shift+P`).
-2. **Review Environment Health**: The Overview Dashboard automatically displays real-time CPU, RAM, active coding session duration, and mounted storage.
-3. **Configure AI Models**: Navigate to **AI Playground** or **Settings & Privacy** to connect local Ollama (`http://localhost:11434`) or input API keys for OpenAI, Anthropic, Gemini, or custom OpenAI-compatible providers. Keys are stored safely in VS Code `SecretStorage`.
-4. **Scan Workspace**: Navigate to **File Intelligence** and click **Scan Workspace** to inspect file distribution, extension breakdown, and duplicate files.
-5. **Explore Pulse Insights**: Run cross-module correlation analysis across system telemetry, git commits, coding activity, API requests, and AI usage.
+1. **Open DevPulse**: Click the DevPulse icon in the Activity Bar or press `Ctrl+Shift+P` and execute `DevPulse: Open Dashboard`.
+2. **Review System Health**: The Overview dashboard immediately surfaces your CPU, memory, and storage utilization.
+3. **Connect AI (Optional)**: Open **AI Playground** → **Models & Providers** to discover local Ollama models (`http://localhost:11434`) or input cloud API keys.
+4. **Scan Workspace**: Navigate to **File Intelligence** and click **Scan Workspace** to audit disk space and duplicate files.
+5. **Monitor APIs**: Follow the [API Intelligence Guide](docs/api-intelligence.md) to integrate the local telemetry middleware with your backend services.
 
 ---
 
-## AI Playground & Pulse Insights (v1.0.0)
+## AI Providers
 
-### 1. AI Playground (`ai`)
-- **Single-Model Interaction**: Enforced single-model conversations for focused, distraction-free prompting and testing (strictly no model comparison).
-- **Streaming Token Delivery**: Real-time generation feedback powered by SSE and NDJSON streaming across OpenAI, Anthropic, Gemini, Groq, local Ollama, and custom OpenAI-compatible endpoints.
-- **Context Selection**: Explicitly attach up to 5 workspace files (up to 256KB/file) with live token estimation.
-- **Prompt Studio**: Built-in template manager with parameter variables (`{{variable}}`), version tracking, and quick insertion into chat.
-- **Custom OpenAI-Compatible Providers**: Connect local vLLM, LM Studio, Together AI, DeepSeek, or OpenRouter with secure API key storage.
-- **Usage & Cost Telemetry**: Detailed token accounting, cloud vs. local inference ratios, latency trends, and historical usage logs.
+DevPulse supports both zero-cost local LLMs and major cloud inference providers:
 
-### 2. Pulse Insights (`insights`)
-- **Unified Intelligence Layer**: Cross-module analytics synthesizing telemetry from System, Workspace, Git, Coding, API, and AI modules.
-- **Environment Health Overview**: 6 module health cards with real-time deterministic scoring (0–100) and health indicators.
-- **Correlation Engine**: 5 deterministic cross-module rules identifying non-trivial correlations with safe, non-causal phrasing and mathematical thresholds.
-- **Explainable Evidence Drawer**: Transparent breakdown of thresholds, values, and timestamps supporting each insight.
-- **Explain with AI**: One-click in-depth diagnostic explanations generated via your connected AI provider.
+| Provider | Supported Models | Key Storage |
+|---|---|---|
+| **Ollama** | Llama 3, DeepSeek R1, Qwen 2.5 Coder, Mistral, Phi | Zero key required (Auto-discovery) |
+| **OpenAI** | GPT-4o, GPT-4o-mini, o1, o3-mini | VS Code `SecretStorage` |
+| **Anthropic** | Claude 3.5 Sonnet, Claude 3.5 Haiku, Claude 3 Opus | VS Code `SecretStorage` |
+| **Google Gemini** | Gemini 2.0 Flash, Gemini 1.5 Pro | VS Code `SecretStorage` |
+| **Groq** | Llama 3.3 70B, DeepSeek R1 Distill | VS Code `SecretStorage` |
+| **Custom OpenAI** | vLLM, LM Studio, Together AI, OpenRouter | VS Code `SecretStorage` |
+
+For detailed setup instructions, refer to [`docs/ai-providers.md`](docs/ai-providers.md).
 
 ---
 
-## Commands Palette Integration
+## API Intelligence Setup
 
-- `DevPulse: Open Dashboard` (`devpulse.openDashboard`)
-- `DevPulse: Open AI Playground` (`devpulse.openAiPlayground`)
-- `DevPulse: View Git Intelligence` (`devpulse.openGitIntelligence`)
-- `DevPulse: View File Intelligence` (`devpulse.openFileIntelligence`)
-- `DevPulse: View System Intelligence` (`devpulse.openSystemIntelligence`)
-- `DevPulse: Scan Workspace` (`devpulse.scanWorkspace`)
-- `DevPulse: Cancel Workspace Scan` (`devpulse.cancelScan`)
-- `DevPulse: Refresh Git Metrics` (`devpulse.refreshGit`)
-- `DevPulse: Refresh Metrics` (`devpulse.refreshMetrics`)
-- `DevPulse: Pause Monitoring` (`devpulse.pauseMonitoring`)
-- `DevPulse: Resume Monitoring` (`devpulse.resumeMonitoring`)
-- `DevPulse: Reset Local Data` (`devpulse.resetData`)
+Connect your backend applications to DevPulse's local telemetry server (`http://127.0.0.1:4318`):
+
+```javascript
+const express = require('express');
+const app = express();
+
+const DEVPULSE_TOKEN = process.env.DEVPULSE_SERVICE_TOKEN;
+
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    fetch('http://127.0.0.1:4318/v1/telemetry', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${DEVPULSE_TOKEN}`
+      },
+      body: JSON.stringify({
+        serviceName: 'backend-api',
+        method: req.method,
+        routeTemplate: req.route ? req.route.path : req.path,
+        statusCode: res.statusCode,
+        durationMs: Date.now() - start
+      })
+    }).catch(() => {});
+  });
+  next();
+});
+```
+
+For advanced testing studio features, assertion scripts, and collection runners, see [`docs/api-intelligence.md`](docs/api-intelligence.md).
 
 ---
 
-## Privacy & Security Guarantees
+## Privacy & Data Sovereignty
 
-1. **Local-First Architecture**: 100% on-device operation. No external telemetry servers, no telemetry pings.
-2. **Zero Code Extraction**: Source code files and AI prompts are never read or stored.
-3. **Secret Storage Isolation**: Cloud API keys are stored exclusively in VS Code `SecretStorage`.
-4. **Credential Masking**: All Git remote URLs and API error logs automatically mask basic auth credentials and keys.
-5. **No Synthetic Data**: Real telemetry only. If an integration or repo is not present, clean informational empty states are presented.
+- **100% On-Device Persistence**: Metrics are written to your local SQLite database file in VS Code global storage.
+- **Zero Remote Telemetry**: DevPulse never transmits tracking telemetry, analytics, or background pings to external servers.
+- **SecretStorage Isolation**: API keys and secrets are never stored in SQLite or exposed to webviews.
+- **Local Data Export**: Export your complete historical dataset in human-readable JSON format at any time via **Settings & Privacy**.
+- **Transparent Disclosures**: External network requests occur exclusively when you explicitly prompt a cloud AI provider or execute a request in API Testing Studio.
+
+Read our complete policy in [`docs/privacy.md`](docs/privacy.md).
 
 ---
 
-## Troubleshooting
+## Documentation
 
-- **Webview does not load**: Run `Developer: Reload Window` from the Command Palette (`Ctrl+R` / `Cmd+R`).
-- **Ollama not detected**: Verify Ollama is running locally via `ollama list` in your terminal and accessible at `http://localhost:11434`.
-- **Database reset**: If local database needs to be reset, use `DevPulse: Reset Local Data` or click **Clear Local Telemetry Database** in the Settings & Privacy view. A timestamped `.bak` backup will be created automatically before reset.
-- **Port conflicts**: DevPulse dynamically checks ports via local socket probing. Use the System Intelligence port table to view and safely free occupied developer ports.
+Detailed guides are available in the [`docs/`](docs/) directory:
+
+- [Installation Guide](docs/installation.md)
+- [Configuration & Settings](docs/configuration.md)
+- [AI Providers & Model Setup](docs/ai-providers.md)
+- [API Intelligence & Testing Studio](docs/api-intelligence.md)
+- [Privacy & Data Sovereignty](docs/privacy.md)
+
+---
+
+## Project Structure
+
+```text
+DEVPULSE/
+├── .github/workflows/    # CI/CD and release automation
+├── docs/                 # User-facing product documentation
+├── resources/icons/      # Extension vector & 256x256 PNG icons
+├── src/                  # VS Code extension host (TypeScript)
+│   ├── collectors/       # Hardware, process, port, git, and file collectors
+│   ├── core/             # Engine, scheduler, event bus, alert engine
+│   ├── database/         # SQLite SQL.js WASM repository layer & migrations
+│   ├── services/         # AI registry, API ingestion server, coding tracker
+│   └── shared/           # Navigation registry and IPC message schemas
+├── tests/                # Vitest automated test suite (141 tests)
+├── webview/              # React 19 dashboard application (Vite + Tailwind)
+├── package.json          # Extension manifest & contributes definitions
+└── esbuild.js            # Node CommonJS extension bundler
+```
+
+---
+
+## Contributing
+
+Contributions, bug reports, and suggestions are welcome! Please open an issue or pull request on [GitHub](https://github.com/Sabithulla-16/DevPulse).
+
+1. Fork the repository and clone it locally.
+2. Install dependencies: `npm install`
+3. Run the development build: `npm run watch`
+4. Run tests and typechecking: `npm test && npm run typecheck`
+5. Submit a pull request with clear release notes.
 
 ---
 
 ## License
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
+## Acknowledgements
+
+DevPulse is built with and powered by:
+- [Visual Studio Code Extension API](https://code.visualstudio.com/api)
+- [SQL.js (SQLite WebAssembly)](https://sql.js.org/)
+- [React](https://react.dev/) & [Tailwind CSS](https://tailwindcss.com/)
+- [Vite](https://vite.dev/) & [esbuild](https://esbuild.github.io/)
+- [Monaco Editor](https://microsoft.github.io/monaco-editor/)
+- [Lucide Icons](https://lucide.dev/)
