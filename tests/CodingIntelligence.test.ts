@@ -16,7 +16,7 @@ describe('Phase 4: Coding Intelligence Suite', () => {
 
   beforeEach(async () => {
     tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'devpulse-coding-test-'));
-    wasmPath = path.join(process.cwd(), 'out', 'vendor', 'sql-wasm.wasm');
+    wasmPath = path.resolve(__dirname, '../node_modules/sql.js/dist/sql-wasm.wasm');
     database = new Database(tempDir, wasmPath);
     await database.initialize();
 

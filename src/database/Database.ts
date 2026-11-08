@@ -206,6 +206,9 @@ export class Database {
       this.wasmPath,
       path.join(__dirname, 'vendor', 'sql-wasm.wasm'),
       path.join(__dirname, '..', 'out', 'vendor', 'sql-wasm.wasm'),
+      path.join(process.cwd(), 'out', 'vendor', 'sql-wasm.wasm'),
+      path.join(process.cwd(), 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'),
+      path.join(__dirname, '..', '..', 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm'),
       path.join(__dirname, '..', 'node_modules', 'sql.js', 'dist', 'sql-wasm.wasm')
     ];
 

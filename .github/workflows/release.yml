@@ -32,11 +32,11 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
-      - name: Run Automated Tests
-        run: npm test
-
       - name: Build Webview & Extension
         run: npm run build
+
+      - name: Run Automated Tests
+        run: npm test
 
       - name: Package VSIX Extension
         run: npx @vscode/vsce package --no-git-tag-version
