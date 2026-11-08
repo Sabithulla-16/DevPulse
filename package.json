@@ -1,9 +1,9 @@
 {
   "name": "devpulse",
   "displayName": "DevPulse",
-  "description": "Unified local-first developer intelligence, AI token telemetry, Git observability, Coding Intelligence, API latency analytics, and hardware monitoring embedded in Visual Studio Code.",
+  "description": "A local-first developer intelligence platform for Visual Studio Code. Monitor system resources, analyze Git activity, track coding sessions, explore AI usage, inspect API performance, and gain actionable developer insights — all in one unified workspace.",
   "version": "1.0.0",
-  "publisher": "valtry-labs",
+  "publisher": "Valtry",
   "icon": "resources/icons/devpulse.png",
   "license": "MIT",
   "homepage": "https://github.com/Sabithulla-16/DevPulse#readme",
